@@ -1,0 +1,754 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mood Profile UI v2 - Power User Edition</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+      padding: 20px;
+      min-height: 100vh;
+    }
+
+    .container {
+      max-width: 430px;
+      margin: 0 auto;
+      background: #0f0f1e;
+      border-radius: 20px;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+      overflow: hidden;
+    }
+
+    /* Header */
+    .header {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      padding: 24px 20px;
+    }
+
+    .header-top {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 8px;
+    }
+
+    .back-btn {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.2);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+
+    .back-btn:hover {
+      background: rgba(255,255,255,0.3);
+    }
+
+    .header h1 {
+      font-size: 19px;
+      font-weight: 700;
+      margin-bottom: 4px;
+      line-height: 1.3;
+    }
+
+    .header p {
+      font-size: 14px;
+      opacity: 0.9;
+    }
+
+    .content {
+      padding: 16px;
+      background: #0f0f1e;
+    }
+
+    /* Quick Summary */
+    .quick-summary {
+      margin-bottom: 16px;
+    }
+
+    .mood-badge {
+      background: linear-gradient(135deg, rgba(102, 126, 234, 0.15), rgba(118, 75, 162, 0.15));
+      border: 1px solid rgba(102, 126, 234, 0.3);
+      border-radius: 16px;
+      padding: 18px;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      margin-bottom: 12px;
+    }
+
+    .mood-badge .emoji {
+      font-size: 36px;
+    }
+
+    .mood-info {
+      flex: 1;
+    }
+
+    .mood-primary {
+      font-size: 17px;
+      font-weight: 700;
+      color: #fff;
+      margin-bottom: 4px;
+    }
+
+    .mood-secondary {
+      font-size: 13px;
+      color: #a0aec0;
+    }
+
+    .themes-row {
+      display: flex;
+      gap: 8px;
+      overflow-x: auto;
+      scrollbar-width: none;
+      -ms-overflow-style: none;
+      padding: 4px 0;
+    }
+
+    .themes-row::-webkit-scrollbar {
+      display: none;
+    }
+
+    .theme-tag {
+      background: rgba(255,255,255,0.08);
+      border: 1px solid rgba(255,255,255,0.15);
+      border-radius: 20px;
+      padding: 8px 14px;
+      font-size: 13px;
+      color: #e2e8f0;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      white-space: nowrap;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .theme-tag:hover {
+      background: rgba(102, 126, 234, 0.2);
+      border-color: #667eea;
+      transform: translateY(-1px);
+    }
+
+    /* Section Title */
+    .section-title {
+      font-size: 11px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: #667eea;
+      margin: 24px 0 12px 0;
+    }
+
+    /* Accordion Cards */
+    .accordion-card {
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 14px;
+      margin-bottom: 10px;
+      overflow: hidden;
+      transition: all 0.2s;
+    }
+
+    .accordion-card:hover {
+      border-color: rgba(102, 126, 234, 0.3);
+    }
+
+    .accordion-header {
+      padding: 16px;
+      cursor: pointer;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      transition: background 0.2s;
+      user-select: none;
+    }
+
+    .accordion-header:hover {
+      background: rgba(255,255,255,0.03);
+    }
+
+    .accordion-title {
+      font-size: 15px;
+      font-weight: 600;
+      color: #fff;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .accordion-icon {
+      color: #667eea;
+      font-size: 18px;
+      transition: transform 0.3s;
+    }
+
+    .accordion-card.expanded .accordion-icon {
+      transform: rotate(90deg);
+    }
+
+    .accordion-content {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.3s ease;
+    }
+
+    .accordion-card.expanded .accordion-content {
+      max-height: 2000px;
+    }
+
+    .accordion-body {
+      padding: 0 16px 16px 16px;
+    }
+
+    /* Meaning Box */
+    .meaning-box {
+      background: rgba(102, 126, 234, 0.1);
+      border-left: 3px solid #667eea;
+      padding: 16px;
+      border-radius: 8px;
+      font-size: 14px;
+      line-height: 1.7;
+      color: #cbd5e0;
+    }
+
+    /* Lyric Quote */
+    .lyric-quote {
+      background: rgba(0,0,0,0.3);
+      border-left: 3px solid #764ba2;
+      padding: 12px 16px;
+      margin: 12px 0;
+      border-radius: 6px;
+      font-style: italic;
+      color: #e2e8f0;
+      font-size: 13px;
+    }
+
+    /* Theme Analysis Grid */
+    .theme-analysis {
+      display: grid;
+      gap: 12px;
+    }
+
+    .theme-item {
+      background: rgba(0,0,0,0.2);
+      padding: 14px;
+      border-radius: 10px;
+      border: 1px solid rgba(255,255,255,0.08);
+    }
+
+    .theme-item-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 8px;
+    }
+
+    .theme-name {
+      font-size: 14px;
+      font-weight: 600;
+      color: #fff;
+    }
+
+    .theme-confidence {
+      font-size: 12px;
+      color: #667eea;
+      font-weight: 600;
+    }
+
+    .theme-bar {
+      height: 5px;
+      background: rgba(255,255,255,0.1);
+      border-radius: 3px;
+      overflow: hidden;
+      margin-bottom: 8px;
+    }
+
+    .theme-bar-fill {
+      height: 100%;
+      background: linear-gradient(90deg, #667eea, #764ba2);
+      border-radius: 3px;
+      transition: width 0.5s ease;
+    }
+
+    .theme-description {
+      font-size: 12px;
+      color: #a0aec0;
+      line-height: 1.5;
+    }
+
+    /* Comparison Section */
+    .comparison-card {
+      background: rgba(118, 75, 162, 0.08);
+      border: 1px solid rgba(118, 75, 162, 0.2);
+      border-radius: 12px;
+      padding: 14px;
+      margin-top: 12px;
+    }
+
+    .comparison-header {
+      font-size: 12px;
+      font-weight: 600;
+      color: #a0aec0;
+      margin-bottom: 10px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .comparison-stat {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 8px;
+    }
+
+    .comparison-label {
+      font-size: 13px;
+      color: #cbd5e0;
+    }
+
+    .comparison-value {
+      font-size: 13px;
+      font-weight: 600;
+      color: #667eea;
+    }
+
+    .comparison-value.higher {
+      color: #48bb78;
+    }
+
+    .comparison-value.lower {
+      color: #f56565;
+    }
+
+    /* Similar Songs */
+    .similar-songs {
+      display: grid;
+      gap: 10px;
+    }
+
+    .similar-song {
+      background: rgba(0,0,0,0.3);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 10px;
+      padding: 12px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .similar-song:hover {
+      background: rgba(102, 126, 234, 0.1);
+      border-color: #667eea;
+      transform: translateX(4px);
+    }
+
+    .similar-song-info {
+      flex: 1;
+    }
+
+    .similar-song-title {
+      font-size: 14px;
+      font-weight: 600;
+      color: #fff;
+      margin-bottom: 2px;
+    }
+
+    .similar-song-album {
+      font-size: 12px;
+      color: #a0aec0;
+    }
+
+    .similarity-score {
+      font-size: 16px;
+      font-weight: 700;
+      color: #667eea;
+    }
+
+    /* Radar Chart Placeholder */
+    .radar-chart {
+      background: rgba(0,0,0,0.3);
+      border-radius: 12px;
+      padding: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 200px;
+      border: 1px solid rgba(255,255,255,0.1);
+    }
+
+    .radar-placeholder {
+      text-align: center;
+      color: #a0aec0;
+    }
+
+    .radar-placeholder .icon {
+      font-size: 48px;
+      margin-bottom: 8px;
+    }
+
+    .radar-placeholder .text {
+      font-size: 13px;
+    }
+
+    /* Mood Grid */
+    .mood-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+
+    .mood-item {
+      background: rgba(0,0,0,0.3);
+      padding: 14px;
+      border-radius: 10px;
+      border: 1px solid rgba(255,255,255,0.1);
+    }
+
+    .mood-item-emoji {
+      font-size: 28px;
+      margin-bottom: 8px;
+    }
+
+    .mood-item-label {
+      font-size: 11px;
+      color: #a0aec0;
+      margin-bottom: 4px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .mood-item-value {
+      font-size: 15px;
+      font-weight: 700;
+      color: #fff;
+    }
+
+    /* Demo Controls */
+    .demo-controls {
+      background: #0a0a15;
+      color: white;
+      padding: 16px;
+      text-align: center;
+      border-top: 1px solid rgba(255,255,255,0.1);
+    }
+
+    .demo-controls h3 {
+      font-size: 13px;
+      margin-bottom: 12px;
+      opacity: 0.7;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    .button-group {
+      display: flex;
+      gap: 8px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    .demo-button {
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.15);
+      color: white;
+      padding: 9px 16px;
+      border-radius: 8px;
+      font-size: 13px;
+      cursor: pointer;
+      transition: all 0.2s;
+      font-weight: 500;
+    }
+
+    .demo-button:hover {
+      background: rgba(102, 126, 234, 0.2);
+      border-color: #667eea;
+    }
+
+    .demo-button.active {
+      background: #667eea;
+      border-color: #667eea;
+    }
+
+    /* Tag */
+    .tag {
+      display: inline-block;
+      background: rgba(102, 126, 234, 0.2);
+      color: #a8b8ff;
+      padding: 4px 10px;
+      border-radius: 12px;
+      font-size: 11px;
+      font-weight: 600;
+      margin-left: 8px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <!-- Header -->
+    <div class="header">
+      <div class="header-top">
+        <div class="back-btn">←</div>
+      </div>
+      <h1 id="song-title">All Too Well (10 Minute Version)</h1>
+      <p id="song-meta">Red (Taylor's Version) • Track 5</p>
+    </div>
+
+    <div class="content">
+      <!-- Quick Summary -->
+      <div class="quick-summary">
+        <div class="mood-badge">
+          <div class="emoji" id="mood-emoji">😢</div>
+          <div class="mood-info">
+            <div class="mood-primary" id="mood-primary">Melancholic · Bittersweet</div>
+            <div class="mood-secondary" id="mood-desc">Reflective and deeply emotional</div>
+          </div>
+        </div>
+
+        <div class="themes-row" id="themes-row">
+          <div class="theme-tag"><span>💔</span><span>Heartbreak</span></div>
+          <div class="theme-tag"><span>🕰️</span><span>Nostalgia</span></div>
+          <div class="theme-tag"><span>🌱</span><span>Growth</span></div>
+          <div class="theme-tag"><span>🎭</span><span>Memory</span></div>
+          <div class="theme-tag"><span>😔</span><span>Regret</span></div>
+        </div>
+      </div>
+
+      <!-- Deep Dive -->
+      <div class="section-title">🔬 DEEP ANALYSIS</div>
+
+      <!-- Song Meaning -->
+      <div class="accordion-card expanded">
+        <div class="accordion-header" onclick="toggleAccordion(this)">
+          <span class="accordion-title">📖 What This Song Is About</span>
+          <span class="accordion-icon">▶</span>
+        </div>
+        <div class="accordion-content">
+          <div class="accordion-body">
+            <div class="meaning-box" id="meaning-text">
+              This song chronicles a profound past relationship, examining how small moments and memories persist years after a breakup. It explores the narrator's journey from intimacy to loss, reflecting on how the relationship shaped her understanding of love and heartbreak.
+            </div>
+
+            <div class="lyric-quote">
+              "And I was never good at telling jokes, but the punch line goes<br>'I'll get older, but your lovers stay my age'"
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Theme Analysis -->
+      <div class="accordion-card expanded">
+        <div class="accordion-header" onclick="toggleAccordion(this)">
+          <span class="accordion-title">💭 Lyrical Themes <span class="tag">WITH QUOTES</span></span>
+          <span class="accordion-icon">▶</span>
+        </div>
+        <div class="accordion-content">
+          <div class="accordion-body">
+            <div class="theme-analysis">
+              <div class="theme-item">
+                <div class="theme-item-header">
+                  <div class="theme-name">💔 Heartbreak</div>
+                  <div class="theme-confidence">95%</div>
+                </div>
+                <div class="theme-bar">
+                  <div class="theme-bar-fill" style="width: 95%"></div>
+                </div>
+                <div class="theme-description">
+                  The core emotional wound explored throughout, from initial pain to lasting scars.
+                </div>
+                <div class="lyric-quote">
+                  "Time won't fly, it's like I'm paralyzed by it"
+                </div>
+              </div>
+
+              <div class="theme-item">
+                <div class="theme-item-header">
+                  <div class="theme-name">🕰️ Nostalgia</div>
+                  <div class="theme-confidence">88%</div>
+                </div>
+                <div class="theme-bar">
+                  <div class="theme-bar-fill" style="width: 88%"></div>
+                </div>
+                <div class="theme-description">
+                  Vivid recollections of autumn imagery and intimate moments that defined the relationship.
+                </div>
+                <div class="lyric-quote">
+                  "Autumn leaves falling down like pieces into place"
+                </div>
+              </div>
+
+              <div class="theme-item">
+                <div class="theme-item-header">
+                  <div class="theme-name">🌱 Growth</div>
+                  <div class="theme-confidence">76%</div>
+                </div>
+                <div class="theme-bar">
+                  <div class="theme-bar-fill" style="width: 76%"></div>
+                </div>
+                <div class="theme-description">
+                  Personal evolution through pain, understanding how this relationship changed her.
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Comparative Analysis -->
+      <div class="accordion-card expanded">
+        <div class="accordion-header" onclick="toggleAccordion(this)">
+          <span class="accordion-title">📊 Compared to Red Album</span>
+          <span class="accordion-icon">▶</span>
+        </div>
+        <div class="accordion-content">
+          <div class="accordion-body">
+            <div class="comparison-card">
+              <div class="comparison-header">vs. Album Average</div>
+              <div class="comparison-stat">
+                <div class="comparison-label">Emotional Intensity</div>
+                <div class="comparison-value higher">+35% higher</div>
+              </div>
+              <div class="comparison-stat">
+                <div class="comparison-label">Heartbreak Theme</div>
+                <div class="comparison-value higher">+42% stronger</div>
+              </div>
+              <div class="comparison-stat">
+                <div class="comparison-label">Energy Level</div>
+                <div class="comparison-value lower">-18% lower</div>
+              </div>
+              <div class="comparison-stat">
+                <div class="comparison-label">Positive Tone</div>
+                <div class="comparison-value lower">-62% lower</div>
+              </div>
+            </div>
+
+            <div style="margin-top: 16px; padding: 12px; background: rgba(0,0,0,0.2); border-radius: 8px; font-size: 13px; color: #cbd5e0; line-height: 1.6;">
+              <strong style="color: #fff;">📍 Position:</strong> One of the most emotionally intense tracks on Red, serving as the emotional centerpiece of the album's heartbreak narrative.
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Similar Songs -->
+      <div class="accordion-card">
+        <div class="accordion-header" onclick="toggleAccordion(this)">
+          <span class="accordion-title">🔗 Songs Like This <span class="tag">BASED ON MOOD</span></span>
+          <span class="accordion-icon">▶</span>
+        </div>
+        <div class="accordion-content">
+          <div class="accordion-body">
+            <div class="similar-songs">
+              <div class="similar-song">
+                <div class="similar-song-info">
+                  <div class="similar-song-title">Dear John</div>
+                  <div class="similar-song-album">Speak Now</div>
+                </div>
+                <div class="similarity-score">94%</div>
+              </div>
+              <div class="similar-song">
+                <div class="similar-song-info">
+                  <div class="similar-song-title">Last Kiss</div>
+                  <div class="similar-song-album">Speak Now</div>
+                </div>
+                <div class="similarity-score">91%</div>
+              </div>
+              <div class="similar-song">
+                <div class="similar-song-info">
+                  <div class="similar-song-title">champagne problems</div>
+                  <div class="similar-song-album">evermore</div>
+                </div>
+                <div class="similarity-score">88%</div>
+              </div>
+              <div class="similar-song">
+                <div class="similar-song-info">
+                  <div class="similar-song-title">The Moment I Knew</div>
+                  <div class="similar-song-album">Red</div>
+                </div>
+                <div class="similarity-score">85%</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Mood Profile -->
+      <div class="accordion-card">
+        <div class="accordion-header" onclick="toggleAccordion(this)">
+          <span class="accordion-title">🎭 Mood Profile</span>
+          <span class="accordion-icon">▶</span>
+        </div>
+        <div class="accordion-content">
+          <div class="accordion-body">
+            <div class="mood-grid">
+              <div class="mood-item">
+                <div class="mood-item-emoji">😢</div>
+                <div class="mood-item-label">Primary Mood</div>
+                <div class="mood-item-value">Melancholic</div>
+              </div>
+              <div class="mood-item">
+                <div class="mood-item-emoji">⚡</div>
+                <div class="mood-item-label">Energy</div>
+                <div class="mood-item-value">Medium</div>
+              </div>
+              <div class="mood-item">
+                <div class="mood-item-emoji">💪</div>
+                <div class="mood-item-label">Intensity</div>
+                <div class="mood-item-value">Intense</div>
+              </div>
+              <div class="mood-item">
+                <div class="mood-item-emoji">🎨</div>
+                <div class="mood-item-label">Tone</div>
+                <div class="mood-item-value">Bittersweet</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Demo Controls -->
+    <div class="demo-controls">
+      <h3>Try Different Examples</h3>
+      <div class="button-group">
+        <button class="demo-button active" onclick="loadExample(1)">All Too Well</button>
+        <button class="demo-button" onclick="loadExample(2)">Shake It Off</button>
+        <button class="demo-button" onclick="loadExample(3)">champagne problems</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    function toggleAccordion(header) {
+      const card = header.parentElement;
+      card.classList.toggle('expanded');
+    }
+
+    function loadExample(num) {
+      // Update active button
+      document.querySelectorAll('.demo-button').forEach((btn, i) => {
+        btn.classList.toggle('active', i + 1 === num);
+      });
+
+      // Placeholder - in real app would load different song data
+      console.log('Loading example', num);
+    }
+  </script>
+</body>
+</html>
