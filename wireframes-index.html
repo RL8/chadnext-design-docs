@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Song Analysis Wireframe Concepts</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: linear-gradient(135deg, #0f0f1e 0%, #1a1a2e 100%);
+            color: #e0e0e0;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 48px;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: #ffffff;
+            margin-bottom: 12px;
+            letter-spacing: -0.5px;
+        }
+
+        .subtitle {
+            font-size: 1.125rem;
+            color: #a0a0b0;
+            font-weight: 400;
+            margin-bottom: 24px;
+        }
+
+        .description {
+            max-width: 800px;
+            margin: 0 auto;
+            font-size: 0.9375rem;
+            line-height: 1.7;
+            color: #b0b0c0;
+            background: rgba(255, 255, 255, 0.05);
+            padding: 20px;
+            border-radius: 8px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .concepts-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 24px;
+            margin-top: 48px;
+        }
+
+        .concept-card {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 16px;
+            padding: 28px;
+            text-decoration: none;
+            color: inherit;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .concept-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: var(--accent-color);
+            transform: scaleX(0);
+            transform-origin: left;
+            transition: transform 0.3s ease;
+        }
+
+        .concept-card:hover {
+            background: rgba(255, 255, 255, 0.08);
+            border-color: var(--accent-color);
+            transform: translateY(-4px);
+            box-shadow: 0 12px 24px rgba(0, 0, 0, 0.3);
+        }
+
+        .concept-card:hover::before {
+            transform: scaleX(1);
+        }
+
+        .concept-a { --accent-color: #667eea; }
+        .concept-b { --accent-color: #764ba2; }
+        .concept-c { --accent-color: #f093fb; }
+        .concept-d { --accent-color: #667eea; }
+
+        .card-label {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--accent-color);
+            font-weight: 600;
+            margin-bottom: 12px;
+        }
+
+        .card-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: #ffffff;
+            margin-bottom: 12px;
+        }
+
+        .card-description {
+            font-size: 0.9375rem;
+            color: #b0b0c0;
+            line-height: 1.6;
+            margin-bottom: 16px;
+        }
+
+        .key-features {
+            margin-top: 16px;
+            padding-top: 16px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .features-title {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            font-weight: 600;
+            color: #888899;
+            margin-bottom: 8px;
+            letter-spacing: 0.5px;
+        }
+
+        .feature-list {
+            list-style: none;
+            font-size: 0.875rem;
+            color: #a0a0b0;
+            line-height: 1.8;
+        }
+
+        .feature-list li:before {
+            content: "→ ";
+            color: var(--accent-color);
+            font-weight: 600;
+            margin-right: 6px;
+        }
+
+        .info-density {
+            display: inline-block;
+            margin-top: 12px;
+            padding: 6px 12px;
+            background: rgba(102, 126, 234, 0.15);
+            border: 1px solid rgba(102, 126, 234, 0.3);
+            border-radius: 12px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: #667eea;
+        }
+
+        .comparison-table {
+            margin-top: 48px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            padding: 24px;
+        }
+
+        .table-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: #ffffff;
+            margin-bottom: 20px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        th {
+            font-size: 0.875rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: #667eea;
+            font-weight: 600;
+        }
+
+        td {
+            font-size: 0.9375rem;
+            color: #b0b0c0;
+        }
+
+        .check {
+            color: #4ade80;
+            font-weight: 600;
+        }
+
+        .partial {
+            color: #fbbf24;
+            font-weight: 600;
+        }
+
+        footer {
+            text-align: center;
+            margin-top: 64px;
+            padding-top: 32px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            color: #707080;
+            font-size: 0.875rem;
+        }
+
+        footer a {
+            color: #667eea;
+            text-decoration: none;
+            transition: color 0.2s ease;
+        }
+
+        footer a:hover {
+            color: #764ba2;
+        }
+
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2rem;
+            }
+
+            .concepts-grid {
+                grid-template-columns: 1fr;
+            }
+
+            table {
+                font-size: 0.875rem;
+            }
+
+            th, td {
+                padding: 8px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Song Analysis Wireframe Concepts</h1>
+            <p class="subtitle">Exploring High-Density Information Architecture</p>
+            <div class="description">
+                <strong style="color: #ffffff; display: block; margin-bottom: 8px;">Design Challenge:</strong>
+                How can we display comprehensive song analysis (mood profiles, audio features, themes, comparisons,
+                similar songs, and cross-references) for hardcore fans who want maximum information volume,
+                while maintaining mobile-friendly UX? Below are four distinct conceptual approaches, each prioritizing
+                different interaction patterns and information density strategies.
+            </div>
+        </header>
+
+        <main>
+            <div class="concepts-grid">
+                <a href="wireframes-concept-a.html" class="concept-card concept-a">
+                    <div class="card-label">Concept A</div>
+                    <h2 class="card-title">Filter-Driven View</h2>
+                    <p class="card-description">
+                        Emoji-based toggles control content visibility. Users activate data layers on demand,
+                        creating custom information combinations.
+                    </p>
+                    <div class="key-features">
+                        <div class="features-title">Key Features</div>
+                        <ul class="feature-list">
+                            <li>6 toggleable data layers</li>
+                            <li>User-controlled density</li>
+                            <li>Progressive disclosure</li>
+                            <li>Reduces scroll length</li>
+                        </ul>
+                    </div>
+                    <span class="info-density">24-48 data points</span>
+                </a>
+
+                <a href="wireframes-concept-b.html" class="concept-card concept-b">
+                    <div class="card-label">Concept B</div>
+                    <h2 class="card-title">Swipe Carousel</h2>
+                    <p class="card-description">
+                        Horizontal swipe navigation between analysis categories. Nested carousels within slides
+                        for exponential information capacity.
+                    </p>
+                    <div class="key-features">
+                        <div class="features-title">Key Features</div>
+                        <ul class="feature-list">
+                            <li>6 main slides + nested carousels</li>
+                            <li>Native mobile gesture</li>
+                            <li>Clear categorization</li>
+                            <li>Self-paced exploration</li>
+                        </ul>
+                    </div>
+                    <span class="info-density">120-168 data points</span>
+                </a>
+
+                <a href="wireframes-concept-c.html" class="concept-card concept-c">
+                    <div class="card-label">Concept C</div>
+                    <h2 class="card-title">Split-Screen Comparison</h2>
+                    <p class="card-description">
+                        Side-by-side comparative view with selectable targets. Toggle between single view and
+                        comparison mode. Chain-based cross-referencing.
+                    </p>
+                    <div class="key-features">
+                        <div class="features-title">Key Features</div>
+                        <ul class="feature-list">
+                            <li>Direct visual comparison</li>
+                            <li>Difference indicators</li>
+                            <li>Album/discography modes</li>
+                            <li>Tap-to-compare navigation</li>
+                        </ul>
+                    </div>
+                    <span class="info-density">90-144 data points</span>
+                </a>
+
+                <a href="wireframes-concept-d.html" class="concept-card concept-d">
+                    <div class="card-label">Concept D</div>
+                    <h2 class="card-title">Data-Dense Dashboard</h2>
+                    <p class="card-description">
+                        Maximum information density. Compact visual hierarchy with expand-on-demand sections.
+                        Horizontal scrolls add dimension without vertical bloat.
+                    </p>
+                    <div class="key-features">
+                        <div class="features-title">Key Features</div>
+                        <ul class="feature-list">
+                            <li>8 sections in one scroll</li>
+                            <li>Highest density approach</li>
+                            <li>Smart micro-interactions</li>
+                            <li>Bloomberg Terminal style</li>
+                        </ul>
+                    </div>
+                    <span class="info-density">180-230 data points</span>
+                </a>
+            </div>
+
+            <div class="comparison-table">
+                <h3 class="table-title">Concept Comparison Matrix</h3>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Feature</th>
+                            <th>Concept A</th>
+                            <th>Concept B</th>
+                            <th>Concept C</th>
+                            <th>Concept D</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Information Density</td>
+                            <td class="partial">Medium</td>
+                            <td class="check">High</td>
+                            <td class="check">High</td>
+                            <td class="check">Highest</td>
+                        </tr>
+                        <tr>
+                            <td>Audio Features</td>
+                            <td class="check">✓ Full</td>
+                            <td class="check">✓ Full</td>
+                            <td class="check">✓ Full</td>
+                            <td class="check">✓ Full</td>
+                        </tr>
+                        <tr>
+                            <td>Cross-Referencing</td>
+                            <td class="check">✓ Tappable</td>
+                            <td class="check">✓ Navigate</td>
+                            <td class="check">✓ Chain</td>
+                            <td class="check">✓ Tappable</td>
+                        </tr>
+                        <tr>
+                            <td>Horizontal Swipe</td>
+                            <td>—</td>
+                            <td class="check">✓ Core</td>
+                            <td>—</td>
+                            <td class="check">✓ Sections</td>
+                        </tr>
+                        <tr>
+                            <td>Comparative Analysis</td>
+                            <td class="partial">Via Stats</td>
+                            <td class="check">✓ Nested</td>
+                            <td class="check">✓ Core</td>
+                            <td class="check">✓ Multiple</td>
+                        </tr>
+                        <tr>
+                            <td>User Control</td>
+                            <td class="check">✓ Highest</td>
+                            <td class="partial">Medium</td>
+                            <td class="partial">Medium</td>
+                            <td class="partial">Medium</td>
+                        </tr>
+                        <tr>
+                            <td>Learning Curve</td>
+                            <td>Low</td>
+                            <td>Medium</td>
+                            <td>Low</td>
+                            <td>High</td>
+                        </tr>
+                        <tr>
+                            <td>Best For</td>
+                            <td>Casual → Power</td>
+                            <td>Explorers</td>
+                            <td>Comparers</td>
+                            <td>Power Users</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </main>
+
+        <footer>
+            <p>Part of the <a href="https://github.com/RL8/chadnext" target="_blank">ChadNext PWA</a> project</p>
+            <p style="margin-top: 8px;"><a href="index.html">← Back to Design Docs Home</a></p>
+        </footer>
+    </div>
+</body>
+</html>

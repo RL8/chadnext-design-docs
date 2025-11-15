@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Concept C: Split-Screen Comparison | Analysis Wireframes</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #f5f5f5;
+            padding: 20px;
+            color: #333;
+        }
+
+        .container {
+            max-width: 430px;
+            margin: 0 auto;
+            background: white;
+            border: 2px solid #333;
+        }
+
+        .wireframe-header {
+            background: #333;
+            color: white;
+            padding: 12px;
+            text-align: center;
+            font-weight: 600;
+        }
+
+        .concept-title {
+            background: #f093fb;
+            color: white;
+            padding: 16px;
+            font-size: 18px;
+            font-weight: 600;
+        }
+
+        .annotation {
+            background: #fff3cd;
+            border-left: 4px solid #ffc107;
+            padding: 12px;
+            margin: 12px;
+            font-size: 13px;
+            line-height: 1.5;
+        }
+
+        .annotation strong {
+            display: block;
+            margin-bottom: 4px;
+            color: #856404;
+        }
+
+        /* Mode Toggle */
+        .mode-toggle {
+            display: flex;
+            padding: 12px;
+            background: #f8f8f8;
+            border-bottom: 2px solid #333;
+        }
+
+        .mode-btn {
+            flex: 1;
+            padding: 8px;
+            border: 1px solid #999;
+            background: white;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .mode-btn.active {
+            background: #f093fb;
+            color: white;
+            border-color: #f093fb;
+        }
+
+        /* Split Screen Layout */
+        .split-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            border-bottom: 2px solid #333;
+        }
+
+        .split-panel {
+            border-right: 1px solid #333;
+            padding: 12px;
+        }
+
+        .split-panel:last-child {
+            border-right: none;
+        }
+
+        .panel-header {
+            font-size: 11px;
+            font-weight: 600;
+            text-transform: uppercase;
+            margin-bottom: 8px;
+            padding-bottom: 6px;
+            border-bottom: 2px solid #f093fb;
+        }
+
+        .metric-row {
+            display: flex;
+            flex-direction: column;
+            margin: 8px 0;
+            font-size: 11px;
+        }
+
+        .metric-label {
+            color: #666;
+            margin-bottom: 3px;
+        }
+
+        .metric-value {
+            font-weight: 600;
+            font-size: 13px;
+        }
+
+        .mini-bar {
+            height: 4px;
+            background: #e0e0e0;
+            margin-top: 3px;
+            border-radius: 2px;
+        }
+
+        .mini-fill {
+            height: 100%;
+            background: #f093fb;
+            border-radius: 2px;
+        }
+
+        .diff-indicator {
+            font-size: 10px;
+            color: #f093fb;
+            font-weight: 600;
+            margin-top: 2px;
+        }
+
+        .compare-selector {
+            padding: 12px;
+            background: #fafafa;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .selector-label {
+            font-size: 10px;
+            text-transform: uppercase;
+            font-weight: 600;
+            margin-bottom: 6px;
+            color: #666;
+        }
+
+        .song-select {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #999;
+            border-radius: 4px;
+            font-size: 12px;
+        }
+
+        .wireframe-note {
+            background: #e3f2fd;
+            border: 2px dashed #2196F3;
+            padding: 16px;
+            margin: 12px;
+            font-size: 12px;
+            line-height: 1.6;
+        }
+
+        .wireframe-note strong {
+            color: #1976D2;
+            display: block;
+            margin-bottom: 8px;
+        }
+
+        .insight-box {
+            background: #fff9e6;
+            border: 1px solid #ffc107;
+            padding: 10px;
+            margin: 12px;
+            font-size: 11px;
+            line-height: 1.5;
+        }
+
+        .insight-box strong {
+            color: #856404;
+            display: block;
+            margin-bottom: 4px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="wireframe-header">CONCEPT C WIREFRAME</div>
+
+        <div class="concept-title">Split-Screen Comparative View</div>
+
+        <div class="annotation">
+            <strong>CORE CONCEPT:</strong>
+            Side-by-side comparison mode. Left panel = current song, right panel = comparison target (similar song, album average, or discography average). Direct visual comparison with difference indicators.
+        </div>
+
+        <!-- MODE TOGGLE -->
+        <div class="mode-toggle">
+            <div class="mode-btn">Single View</div>
+            <div class="mode-btn active">Compare</div>
+        </div>
+
+        <div class="annotation">
+            <strong>INTERACTION:</strong>
+            Toggle between "Single View" (full-width analysis) and "Compare" (split-screen). When in Compare mode, select comparison target below.
+        </div>
+
+        <!-- COMPARISON SELECTOR -->
+        <div class="compare-selector">
+            <div class="selector-label">Compare Against:</div>
+            <select class="song-select">
+                <option>All Too Well (89% similar)</option>
+                <option>The Moment I Knew (84% similar)</option>
+                <option>Last Kiss (81% similar)</option>
+                <option>─────────────</option>
+                <option>Speak Now (Album Avg)</option>
+                <option>All Albums (Discography Avg)</option>
+            </select>
+        </div>
+
+        <!-- SPLIT SCREEN COMPARISON -->
+        <div class="split-container">
+            <!-- LEFT PANEL: Current Song -->
+            <div class="split-panel">
+                <div class="panel-header">Back to December</div>
+
+                <div class="metric-row">
+                    <div class="metric-label">Mood</div>
+                    <div class="metric-value">Melancholic</div>
+                </div>
+
+                <div class="metric-row">
+                    <div class="metric-label">Energy</div>
+                    <div class="metric-value">68%</div>
+                    <div class="mini-bar">
+                        <div class="mini-fill" style="width: 68%"></div>
+                    </div>
+                </div>
+
+                <div class="metric-row">
+                    <div class="metric-label">Intensity</div>
+                    <div class="metric-value">Intense</div>
+                </div>
+
+                <div class="metric-row">
+                    <div class="metric-label">Danceability</div>
+                    <div class="metric-value">45%</div>
+                    <div class="mini-bar">
+                        <div class="mini-fill" style="width: 45%"></div>
+                    </div>
+                </div>
+
+                <div class="metric-row">
+                    <div class="metric-label">Valence</div>
+                    <div class="metric-value">32%</div>
+                    <div class="mini-bar">
+                        <div class="mini-fill" style="width: 32%"></div>
+                    </div>
+                </div>
+
+                <div class="metric-row">
+                    <div class="metric-label">Acousticness</div>
+                    <div class="metric-value">78%</div>
+                    <div class="mini-bar">
+                        <div class="mini-fill" style="width: 78%"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- RIGHT PANEL: Comparison Target -->
+            <div class="split-panel">
+                <div class="panel-header">All Too Well</div>
+
+                <div class="metric-row">
+                    <div class="metric-label">Mood</div>
+                    <div class="metric-value">Melancholic</div>
+                    <div class="diff-indicator">✓ Match</div>
+                </div>
+
+                <div class="metric-row">
+                    <div class="metric-label">Energy</div>
+                    <div class="metric-value">72%</div>
+                    <div class="mini-bar">
+                        <div class="mini-fill" style="width: 72%"></div>
+                    </div>
+                    <div class="diff-indicator">+4% higher</div>
+                </div>
+
+                <div class="metric-row">
+                    <div class="metric-label">Intensity</div>
+                    <div class="metric-value">Intense</div>
+                    <div class="diff-indicator">✓ Match</div>
+                </div>
+
+                <div class="metric-row">
+                    <div class="metric-label">Danceability</div>
+                    <div class="metric-value">38%</div>
+                    <div class="mini-bar">
+                        <div class="mini-fill" style="width: 38%"></div>
+                    </div>
+                    <div class="diff-indicator">-7% lower</div>
+                </div>
+
+                <div class="metric-row">
+                    <div class="metric-label">Valence</div>
+                    <div class="metric-value">28%</div>
+                    <div class="mini-bar">
+                        <div class="mini-fill" style="width: 28%"></div>
+                    </div>
+                    <div class="diff-indicator">-4% lower</div>
+                </div>
+
+                <div class="metric-row">
+                    <div class="metric-label">Acousticness</div>
+                    <div class="metric-value">82%</div>
+                    <div class="mini-bar">
+                        <div class="mini-fill" style="width: 82%"></div>
+                    </div>
+                    <div class="diff-indicator">+4% higher</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- AI INSIGHTS -->
+        <div class="insight-box">
+            <strong>🤖 Comparative Insights:</strong>
+            Both songs share melancholic mood and intense emotional delivery. "All Too Well" has slightly higher energy (+4%) and acousticness (+4%), making it feel more raw. "Back to December" is more danceable (+7%), giving it a more structured pop production.
+        </div>
+
+        <div class="wireframe-note">
+            <strong>SCROLLABLE SECTION BELOW:</strong>
+            After split comparison, vertical scroll continues with:<br>
+            <br>
+            <strong>THEMES COMPARISON (split):</strong><br>
+            Left: Regret (89%), Lost Love (85%)<br>
+            Right: Regret (94%), Lost Love (91%)<br>
+            Diff: All Too Well has stronger regret theme (+5%)<br>
+            <br>
+            <strong>LYRIC EVIDENCE (split):</strong><br>
+            Left: "I'd go back to December..."<br>
+            Right: "Maybe we got lost in translation..."<br>
+            Both show similar retrospective narrative style<br>
+            <br>
+            <strong>SIMILAR SONGS (split):</strong><br>
+            Left: Songs similar to Back to December<br>
+            Right: Songs similar to All Too Well<br>
+            Overlap shown with ✓ indicators
+        </div>
+
+        <div class="annotation">
+            <strong>CROSS-REFERENCING INTERACTION:</strong>
+            When viewing similar songs in split view, tap any song in right panel to make it the new comparison target. Creates chain exploration: Song A → compare to Song B → tap Song C → now comparing Song B to Song C.
+        </div>
+
+        <div class="wireframe-note">
+            <strong>ALBUM AVERAGE COMPARISON MODE:</strong>
+            When selecting "Speak Now (Album Avg)" as comparison target, right panel shows:<br>
+            • Album average values for all metrics<br>
+            • Percentile ranking (e.g., "68% energy = 73rd percentile on album")<br>
+            • Standout metrics highlighted (e.g., "Top 3 most acoustic on Speak Now")<br>
+            <br>
+            Creates "where does this song sit within the album" analysis
+        </div>
+
+        <div class="wireframe-note">
+            <strong>DISCOGRAPHY COMPARISON MODE:</strong>
+            When selecting "All Albums (Discography Avg)", right panel shows:<br>
+            • Career-wide average values<br>
+            • Era context (e.g., "Energy 15% higher than Folklore/Evermore era")<br>
+            • Historical ranking (e.g., "28th most melancholic song across 246 songs")<br>
+            • Evolution indicators (e.g., "Earlier acoustic phase, pre-1989 synth shift")
+        </div>
+
+        <div class="annotation">
+            <strong>ADVANTAGES:</strong>
+            • Direct visual comparison eliminates cognitive load<br>
+            • Difference indicators show exact deltas<br>
+            • Toggle between single/compare prevents clutter<br>
+            • Cross-referencing via tap-to-compare chain<br>
+            • Combines lyrical AND audio features in one view<br>
+            • Album/discography modes provide statistical context
+        </div>
+
+        <div class="annotation">
+            <strong>INFORMATION VOLUME:</strong>
+            10-12 metrics × 2 panels = 20-24 data points visible + difference calculations (10-12 more) = 30-36 data points per screen. Scroll for 3-4 more sections = 90-144 total data points in compare mode.
+        </div>
+
+        <div class="annotation">
+            <strong>TECHNICAL REQUIREMENT:</strong>
+            Needs similar song data (already have via song_similarities table) + album aggregates + discography aggregates. Can compute on-demand or pre-cache.
+        </div>
+    </div>
+</body>
+</html>

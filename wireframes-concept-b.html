@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Concept B: Swipe Carousel | Analysis Wireframes</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #f5f5f5;
+            padding: 20px;
+            color: #333;
+        }
+
+        .container {
+            max-width: 430px;
+            margin: 0 auto;
+            background: white;
+            border: 2px solid #333;
+        }
+
+        .wireframe-header {
+            background: #333;
+            color: white;
+            padding: 12px;
+            text-align: center;
+            font-weight: 600;
+        }
+
+        .concept-title {
+            background: #764ba2;
+            color: white;
+            padding: 16px;
+            font-size: 18px;
+            font-weight: 600;
+        }
+
+        .annotation {
+            background: #fff3cd;
+            border-left: 4px solid #ffc107;
+            padding: 12px;
+            margin: 12px;
+            font-size: 13px;
+            line-height: 1.5;
+        }
+
+        .annotation strong {
+            display: block;
+            margin-bottom: 4px;
+            color: #856404;
+        }
+
+        /* Carousel Structure */
+        .carousel-container {
+            position: relative;
+            overflow: hidden;
+            border-top: 2px solid #333;
+            border-bottom: 2px solid #333;
+        }
+
+        .carousel-indicator {
+            display: flex;
+            gap: 6px;
+            padding: 12px;
+            background: #f8f8f8;
+            justify-content: center;
+        }
+
+        .dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #ddd;
+            border: 1px solid #999;
+        }
+
+        .dot.active {
+            background: #764ba2;
+            width: 24px;
+            border-radius: 4px;
+        }
+
+        .slide {
+            padding: 16px;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .slide-title {
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 12px;
+            color: #764ba2;
+            text-align: center;
+        }
+
+        .data-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px;
+            border-bottom: 1px solid #eee;
+        }
+
+        .data-label {
+            font-size: 13px;
+            color: #666;
+        }
+
+        .data-value {
+            font-size: 13px;
+            font-weight: 600;
+        }
+
+        .mini-chart {
+            height: 6px;
+            background: #e0e0e0;
+            border-radius: 3px;
+            margin-top: 4px;
+            position: relative;
+        }
+
+        .mini-fill {
+            height: 100%;
+            background: #764ba2;
+            border-radius: 3px;
+        }
+
+        .swipe-hint {
+            text-align: center;
+            padding: 12px;
+            background: #f0f0f0;
+            font-size: 12px;
+            color: #666;
+            border-top: 1px dashed #ccc;
+        }
+
+        .wireframe-note {
+            background: #e3f2fd;
+            border: 2px dashed #2196F3;
+            padding: 16px;
+            margin: 12px;
+            font-size: 12px;
+            line-height: 1.6;
+        }
+
+        .wireframe-note strong {
+            color: #1976D2;
+            display: block;
+            margin-bottom: 8px;
+        }
+
+        .nested-carousel {
+            background: #fafafa;
+            border: 1px dashed #999;
+            padding: 12px;
+            margin: 8px 0;
+        }
+
+        .nested-title {
+            font-size: 11px;
+            text-transform: uppercase;
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: #666;
+        }
+
+        .theme-card {
+            background: white;
+            border: 1px solid #ddd;
+            padding: 10px;
+            margin: 6px 0;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="wireframe-header">CONCEPT B WIREFRAME</div>
+
+        <div class="concept-title">Horizontal Swipe Carousel</div>
+
+        <div class="annotation">
+            <strong>CORE CONCEPT:</strong>
+            Multiple analysis "slides" that user swipes through horizontally. Each slide is a full-screen category. Nested carousels within slides for sub-categories. Maximum information density per screen.
+        </div>
+
+        <!-- SLIDE INDICATOR -->
+        <div class="carousel-indicator">
+            <div class="dot"></div>
+            <div class="dot active"></div>
+            <div class="dot"></div>
+            <div class="dot"></div>
+            <div class="dot"></div>
+            <div class="dot"></div>
+        </div>
+
+        <div class="annotation">
+            <strong>SLIDE 1: Overview</strong> • <strong>SLIDE 2: Mood (current)</strong> • SLIDE 3: Audio • SLIDE 4: Themes • SLIDE 5: Similar Songs • SLIDE 6: Comparisons
+        </div>
+
+        <!-- CURRENT SLIDE: MOOD ANALYSIS -->
+        <div class="carousel-container">
+            <div class="slide">
+                <div class="slide-title">😢 Mood Analysis</div>
+
+                <div class="data-row">
+                    <div class="data-label">Primary Mood</div>
+                    <div class="data-value">Melancholic</div>
+                </div>
+                <div class="data-row">
+                    <div class="data-label">Confidence Score</div>
+                    <div class="data-value">92%</div>
+                </div>
+                <div class="data-row">
+                    <div class="data-label">Energy Level</div>
+                    <div class="data-value">High (68%)</div>
+                </div>
+                <div class="data-row">
+                    <div class="data-label">Emotional Intensity</div>
+                    <div class="data-value">Intense</div>
+                </div>
+                <div class="data-row">
+                    <div class="data-label">Tone</div>
+                    <div class="data-value">Bittersweet</div>
+                </div>
+
+                <!-- Nested horizontal carousel for mood evidence -->
+                <div class="nested-carousel">
+                    <div class="nested-title">← Swipe for lyric evidence (3) →</div>
+                    <div style="border: 1px solid #ddd; padding: 8px; background: white; font-style: italic; font-size: 12px;">
+                        "And I'd go back to December all the time"
+                    </div>
+                    <div style="text-align: center; margin-top: 6px; font-size: 10px; color: #999;">
+                        Quote 1 of 3 • Swipe →
+                    </div>
+                </div>
+            </div>
+
+            <div class="swipe-hint">← Swipe left for Audio Features →</div>
+        </div>
+
+        <!-- SLIDE 3 PREVIEW: AUDIO FEATURES -->
+        <div class="wireframe-note">
+            <strong>SLIDE 3: 🎵 AUDIO FEATURES (swipe right to view)</strong>
+            Full-screen slide showing all 6 audio dimensions:<br>
+            • Danceability: 45% [progress bar] +12% vs album<br>
+            • Energy: 68% [progress bar] +15% vs album<br>
+            • Valence: 32% [progress bar] -8% vs album<br>
+            • Acousticness: 78% [progress bar] +35% vs album<br>
+            • Speechiness: 4% [progress bar] -2% vs album<br>
+            • Instrumentalness: 0% [progress bar] Album avg<br>
+            <br>
+            Nested carousel: ← Swipe to compare vs Speak Now / Red / 1989 / etc →
+        </div>
+
+        <!-- SLIDE 4 PREVIEW: THEMES -->
+        <div class="wireframe-note">
+            <strong>SLIDE 4: 📝 THEMES ANALYSIS</strong>
+            Detected themes as cards in vertical scroll within slide:<br>
+            <div class="theme-card">
+                <strong>Regret (89% confidence)</strong><br>
+                <small>"I'd go back to December, turn around and make it alright"<br>
+                "I miss your tan skin, your sweet smile"</small><br>
+                <div style="margin-top: 4px; font-size: 11px; color: #666;">
+                    Nested carousel: 4 supporting quotes →
+                </div>
+            </div>
+            + Lost Love (85%), Time (72%), Nostalgia (68%), etc.
+        </div>
+
+        <!-- SLIDE 5 PREVIEW: SIMILAR SONGS -->
+        <div class="wireframe-note">
+            <strong>SLIDE 5: 🔗 SIMILAR SONGS</strong>
+            List of similar songs with tap-to-navigate cross-referencing:<br>
+            1. All Too Well (89% similar) → [tap to view its analysis]<br>
+            2. The Moment I Knew (84% similar) → [tap]<br>
+            3. Last Kiss (81% similar) → [tap]<br>
+            <br>
+            Nested carousel: ← By Mood Similarity / Audio Similarity / Combined →<br>
+            Shows different rankings based on similarity algorithm
+        </div>
+
+        <!-- SLIDE 6 PREVIEW: COMPARISONS -->
+        <div class="wireframe-note">
+            <strong>SLIDE 6: 📊 COMPARATIVE STATS</strong>
+            • Ranking within album (e.g., "2nd most melancholic on Speak Now")<br>
+            • Discography percentiles (e.g., "Top 5% energy across all songs")<br>
+            • Era comparisons (e.g., "+25% more acoustic than Reputation average")<br>
+            <br>
+            Nested carousel: ← Album / Discography / By Era →
+        </div>
+
+        <div class="annotation">
+            <strong>ADVANTAGES:</strong>
+            • Horizontal swipe = native mobile gesture, feels natural<br>
+            • Each slide can be information-dense without overwhelming<br>
+            • Nested carousels = exponential information capacity<br>
+            • Clear categorization (6 main slides × 3-5 nested each = 18-30 views)<br>
+            • User explores at their own pace<br>
+            • Can bookmark/share specific slide URLs
+        </div>
+
+        <div class="annotation">
+            <strong>INFORMATION VOLUME:</strong>
+            6 main slides × avg 8 data points + nested carousels (3-5 per slide) × 4 data points each = 48 base + 72-120 nested = 120-168 total accessible data points
+        </div>
+
+        <div class="annotation">
+            <strong>CROSS-REFERENCING:</strong>
+            Slide 5 (Similar Songs) allows tapping any song to navigate to that song's full carousel analysis. Creates interconnected exploration pattern.
+        </div>
+    </div>
+</body>
+</html>

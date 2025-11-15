@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Concept A: Filter-Driven View | Analysis Wireframes</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #f5f5f5;
+            padding: 20px;
+            color: #333;
+        }
+
+        .container {
+            max-width: 430px;
+            margin: 0 auto;
+            background: white;
+            border: 2px solid #333;
+        }
+
+        .wireframe-header {
+            background: #333;
+            color: white;
+            padding: 12px;
+            text-align: center;
+            font-weight: 600;
+        }
+
+        .concept-title {
+            background: #667eea;
+            color: white;
+            padding: 16px;
+            font-size: 18px;
+            font-weight: 600;
+        }
+
+        .annotation {
+            background: #fff3cd;
+            border-left: 4px solid #ffc107;
+            padding: 12px;
+            margin: 12px;
+            font-size: 13px;
+            line-height: 1.5;
+        }
+
+        .annotation strong {
+            display: block;
+            margin-bottom: 4px;
+            color: #856404;
+        }
+
+        /* Wireframe Components */
+        .filter-bar {
+            padding: 12px;
+            border-bottom: 2px solid #333;
+            background: #fafafa;
+        }
+
+        .filter-label {
+            font-size: 11px;
+            text-transform: uppercase;
+            font-weight: 600;
+            margin-bottom: 8px;
+            letter-spacing: 0.5px;
+        }
+
+        .filter-chips {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .chip {
+            border: 2px solid #ddd;
+            padding: 6px 12px;
+            border-radius: 16px;
+            font-size: 13px;
+            background: white;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .chip.active {
+            background: #667eea;
+            color: white;
+            border-color: #667eea;
+        }
+
+        .content-section {
+            padding: 16px;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .section-header {
+            font-weight: 600;
+            font-size: 12px;
+            text-transform: uppercase;
+            margin-bottom: 12px;
+            color: #666;
+            letter-spacing: 0.5px;
+        }
+
+        .data-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+        }
+
+        .data-item {
+            border: 1px solid #ddd;
+            padding: 8px;
+            border-radius: 4px;
+        }
+
+        .data-label {
+            font-size: 10px;
+            text-transform: uppercase;
+            color: #888;
+            margin-bottom: 4px;
+        }
+
+        .data-value {
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .lyric-quote {
+            border-left: 3px solid #667eea;
+            padding: 8px 12px;
+            margin: 8px 0;
+            background: #f8f9ff;
+            font-style: italic;
+            font-size: 13px;
+        }
+
+        .comparison-bar {
+            height: 8px;
+            background: #e0e0e0;
+            border-radius: 4px;
+            margin: 4px 0;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .comparison-fill {
+            height: 100%;
+            background: #667eea;
+            position: absolute;
+            left: 0;
+            top: 0;
+        }
+
+        .song-link {
+            border: 1px solid #667eea;
+            padding: 8px 12px;
+            margin: 6px 0;
+            border-radius: 4px;
+            background: #f8f9ff;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .wireframe-note {
+            background: #e3f2fd;
+            border: 2px dashed #2196F3;
+            padding: 16px;
+            margin: 12px;
+            font-size: 12px;
+            line-height: 1.6;
+        }
+
+        .wireframe-note strong {
+            color: #1976D2;
+            display: block;
+            margin-bottom: 8px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="wireframe-header">CONCEPT A WIREFRAME</div>
+
+        <div class="concept-title">Filter-Driven Information View</div>
+
+        <div class="annotation">
+            <strong>CORE CONCEPT:</strong>
+            Emoji filters at top act as toggles - clicking an emoji shows/hides related content sections below. Multiple filters can be active simultaneously, creating dynamic content combinations.
+        </div>
+
+        <!-- FILTER BAR -->
+        <div class="filter-bar">
+            <div class="filter-label">Active Data Layers</div>
+            <div class="filter-chips">
+                <div class="chip active">😢 Mood</div>
+                <div class="chip active">⚡ Energy</div>
+                <div class="chip">🎵 Audio</div>
+                <div class="chip">📝 Themes</div>
+                <div class="chip">🔗 Similar</div>
+                <div class="chip">📊 Stats</div>
+            </div>
+        </div>
+
+        <div class="annotation">
+            <strong>INTERACTION:</strong>
+            Tap any chip to toggle that data layer on/off. Content sections below appear/disappear based on active filters. Default: Mood + Energy active.
+        </div>
+
+        <!-- MOOD CONTENT (visible because 😢 Mood active) -->
+        <div class="content-section">
+            <div class="section-header">😢 Mood Analysis</div>
+            <div class="data-grid">
+                <div class="data-item">
+                    <div class="data-label">Primary Mood</div>
+                    <div class="data-value">Melancholic</div>
+                </div>
+                <div class="data-item">
+                    <div class="data-label">Confidence</div>
+                    <div class="data-value">92%</div>
+                </div>
+                <div class="data-item">
+                    <div class="data-label">Intensity</div>
+                    <div class="data-value">Intense</div>
+                </div>
+                <div class="data-item">
+                    <div class="data-label">Tone</div>
+                    <div class="data-value">Bittersweet</div>
+                </div>
+            </div>
+            <div class="lyric-quote">
+                "And I'd go back to December all the time"
+            </div>
+        </div>
+
+        <!-- ENERGY CONTENT (visible because ⚡ Energy active) -->
+        <div class="content-section">
+            <div class="section-header">⚡ Energy Profile</div>
+            <div class="data-item" style="margin-bottom: 8px;">
+                <div class="data-label">Song Energy</div>
+                <div class="comparison-bar">
+                    <div class="comparison-fill" style="width: 68%"></div>
+                </div>
+                <div style="font-size: 11px; color: #666; margin-top: 4px;">68% - High</div>
+            </div>
+            <div class="data-item">
+                <div class="data-label">vs. Album Average</div>
+                <div class="comparison-bar">
+                    <div class="comparison-fill" style="width: 78%"></div>
+                </div>
+                <div style="font-size: 11px; color: #666; margin-top: 4px;">+15% higher energy</div>
+            </div>
+        </div>
+
+        <!-- AUDIO FEATURES (would appear when 🎵 Audio toggled on) -->
+        <div class="wireframe-note">
+            <strong>🎵 AUDIO LAYER (currently hidden - toggle to show):</strong>
+            Would display: Danceability (45%), Valence (32%), Acousticness (78%), Speechiness (4%), Instrumentalness (0%), each with comparison bars vs album/discography
+        </div>
+
+        <!-- THEMES (would appear when 📝 Themes toggled on) -->
+        <div class="wireframe-note">
+            <strong>📝 THEMES LAYER (currently hidden):</strong>
+            Would show: Detected themes with confidence scores + supporting lyric quotes for each theme. E.g., "Regret (89%)", "Lost Love (85%)", "Time (72%)" with 2-3 lyric examples each
+        </div>
+
+        <!-- SIMILAR SONGS (would appear when 🔗 Similar toggled on) -->
+        <div class="wireframe-note">
+            <strong>🔗 SIMILAR SONGS LAYER (currently hidden):</strong>
+            Would display list of clickable similar songs with similarity percentages. Clicking a song navigates to that song's analysis view (cross-referencing).
+        </div>
+
+        <!-- STATS (would appear when 📊 Stats toggled on) -->
+        <div class="wireframe-note">
+            <strong>📊 STATS LAYER (currently hidden):</strong>
+            Would show: Comparative statistics across album and entire discography. E.g., "Most melancholic song on Speak Now", "Top 5% highest energy in discography", "92nd percentile for acousticness"
+        </div>
+
+        <div class="annotation">
+            <strong>ADVANTAGES:</strong>
+            • Users control information density<br>
+            • Can combine any layers (e.g., Audio + Similar + Stats)<br>
+            • Reduces scroll length while maximizing available data<br>
+            • Progressive disclosure - casual fans see less, power users activate all<br>
+            • Same UI pattern, just dynamic content visibility
+        </div>
+
+        <div class="annotation">
+            <strong>INFORMATION VOLUME:</strong>
+            6 data layers × average 4-8 data points each = 24-48 unique pieces of information available, user-controlled
+        </div>
+    </div>
+</body>
+</html>
