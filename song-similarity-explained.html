@@ -1,0 +1,534 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Song Similarity System - ChadNext</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: linear-gradient(135deg, #0f0f1e 0%, #1a1a2e 100%);
+            color: #e0e0e0;
+            line-height: 1.7;
+            padding: 40px 20px;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 60px;
+        }
+
+        h1 {
+            font-size: 2.75rem;
+            font-weight: 700;
+            color: #ffffff;
+            margin-bottom: 16px;
+            letter-spacing: -0.5px;
+        }
+
+        .emoji-header {
+            font-size: 3rem;
+            display: block;
+            margin-bottom: 16px;
+        }
+
+        .subtitle {
+            font-size: 1.25rem;
+            color: #a0a0b0;
+            font-weight: 400;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        section {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            padding: 40px;
+            margin-bottom: 32px;
+        }
+
+        h2 {
+            font-size: 1.875rem;
+            color: #ffffff;
+            margin-bottom: 24px;
+            padding-bottom: 16px;
+            border-bottom: 2px solid rgba(102, 126, 234, 0.3);
+        }
+
+        h3 {
+            font-size: 1.375rem;
+            color: #b8b8d0;
+            margin-top: 32px;
+            margin-bottom: 16px;
+        }
+
+        p {
+            font-size: 1.0625rem;
+            color: #c0c0d0;
+            margin-bottom: 20px;
+        }
+
+        .highlight-box {
+            background: rgba(102, 126, 234, 0.1);
+            border-left: 4px solid #667eea;
+            padding: 24px;
+            margin: 24px 0;
+            border-radius: 8px;
+        }
+
+        .highlight-box p {
+            margin-bottom: 0;
+            font-size: 1.125rem;
+            color: #e8e8f0;
+        }
+
+        .comparison-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin: 24px 0;
+        }
+
+        .metric-card {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 12px;
+            padding: 20px;
+        }
+
+        .metric-card h4 {
+            color: #667eea;
+            font-size: 0.875rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 8px;
+        }
+
+        .metric-card .value {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: #ffffff;
+            margin-bottom: 8px;
+        }
+
+        .metric-card .description {
+            font-size: 0.9375rem;
+            color: #a0a0b0;
+            line-height: 1.5;
+        }
+
+        .example-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 24px 0;
+            overflow: hidden;
+            border-radius: 12px;
+        }
+
+        .example-table th,
+        .example-table td {
+            padding: 16px;
+            text-align: left;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        .example-table th {
+            background: rgba(102, 126, 234, 0.15);
+            color: #667eea;
+            font-weight: 600;
+            font-size: 0.9375rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .example-table td {
+            background: rgba(255, 255, 255, 0.02);
+            color: #c0c0d0;
+        }
+
+        .example-table tr:last-child td {
+            border-bottom: none;
+        }
+
+        .score-badge {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-weight: 600;
+            font-size: 0.9375rem;
+        }
+
+        .score-high {
+            background: rgba(52, 211, 153, 0.15);
+            color: #34d399;
+            border: 1px solid rgba(52, 211, 153, 0.3);
+        }
+
+        .score-medium {
+            background: rgba(251, 191, 36, 0.15);
+            color: #fbbf24;
+            border: 1px solid rgba(251, 191, 36, 0.3);
+        }
+
+        .score-low {
+            background: rgba(248, 113, 113, 0.15);
+            color: #f87171;
+            border: 1px solid rgba(248, 113, 113, 0.3);
+        }
+
+        .formula {
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(102, 126, 234, 0.3);
+            border-radius: 12px;
+            padding: 20px 24px;
+            text-align: center;
+            font-family: 'Courier New', monospace;
+            font-size: 1.125rem;
+            color: #667eea;
+            margin: 24px 0;
+        }
+
+        .process-steps {
+            counter-reset: step;
+        }
+
+        .process-step {
+            position: relative;
+            padding-left: 60px;
+            margin-bottom: 32px;
+        }
+
+        .process-step::before {
+            counter-increment: step;
+            content: counter(step);
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 1.125rem;
+            color: white;
+        }
+
+        .process-step h4 {
+            font-size: 1.125rem;
+            color: #ffffff;
+            margin-bottom: 8px;
+        }
+
+        .process-step p {
+            color: #b0b0c0;
+            margin-bottom: 0;
+        }
+
+        .back-link {
+            display: inline-block;
+            margin-top: 40px;
+            padding: 12px 24px;
+            background: rgba(102, 126, 234, 0.15);
+            border: 1px solid rgba(102, 126, 234, 0.3);
+            border-radius: 12px;
+            color: #667eea;
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+
+        .back-link:hover {
+            background: rgba(102, 126, 234, 0.25);
+            border-color: rgba(102, 126, 234, 0.5);
+            transform: translateX(-4px);
+        }
+
+        code {
+            background: rgba(0, 0, 0, 0.3);
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-family: 'Courier New', monospace;
+            color: #667eea;
+            font-size: 0.9375rem;
+        }
+
+        @media (max-width: 640px) {
+            h1 {
+                font-size: 2rem;
+            }
+
+            .emoji-header {
+                font-size: 2.5rem;
+            }
+
+            section {
+                padding: 24px;
+            }
+
+            .comparison-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .example-table {
+                font-size: 0.875rem;
+            }
+
+            .example-table th,
+            .example-table td {
+                padding: 12px 8px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <span class="emoji-header">🎵</span>
+            <h1>Song Similarity System</h1>
+            <p class="subtitle">How we find songs that sound and feel alike</p>
+        </header>
+
+        <main>
+            <!-- What It Is -->
+            <section>
+                <h2>What Is It?</h2>
+                <p>
+                    Think of it like <strong>"Customers who liked this also liked..."</strong> but for Taylor Swift songs.
+                </p>
+                <p>
+                    The Song Similarity System analyzes every song in Taylor's discography and figures out which songs
+                    are most similar to each other based on their <em>vibe</em> (mood) and <em>sound</em> (audio features).
+                </p>
+                <div class="highlight-box">
+                    <p><strong>💡 In One Sentence:</strong> A pre-calculated lookup table that stores "how similar" every Taylor Swift song is to every other song, based on both their emotional vibe (60%) and musical characteristics (40%).</p>
+                </div>
+            </section>
+
+            <!-- How It Works -->
+            <section>
+                <h2>How It Works</h2>
+
+                <div class="process-steps">
+                    <div class="process-step">
+                        <h4>Convert Songs to Numbers</h4>
+                        <p>Each song is turned into two sets of numbers (vectors) that capture its essence:</p>
+                        <div class="comparison-grid" style="margin-top: 16px;">
+                            <div class="metric-card">
+                                <h4>Mood Profile</h4>
+                                <div class="value">4 Numbers</div>
+                                <div class="description">Mood type, energy level, emotional intensity, tone</div>
+                            </div>
+                            <div class="metric-card">
+                                <h4>Audio Features</h4>
+                                <div class="value">6 Numbers</div>
+                                <div class="description">Danceability, energy, valence, acousticness, instrumentalness, speechiness</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="process-step">
+                        <h4>Compare Using Math</h4>
+                        <p>
+                            We use <strong>Cosine Similarity</strong> to measure how close two songs are to each other.
+                            Think of it as measuring the angle between two vectors.
+                        </p>
+                        <div class="comparison-grid" style="margin-top: 16px;">
+                            <div class="metric-card">
+                                <div class="value">1.0</div>
+                                <div class="description">Identical twins</div>
+                            </div>
+                            <div class="metric-card">
+                                <div class="value">0.8–0.9</div>
+                                <div class="description">Very similar</div>
+                            </div>
+                            <div class="metric-card">
+                                <div class="value">0.5–0.7</div>
+                                <div class="description">Somewhat similar</div>
+                            </div>
+                            <div class="metric-card">
+                                <div class="value">0.0</div>
+                                <div class="description">Completely different</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="process-step">
+                        <h4>Combine the Scores</h4>
+                        <p>We weight mood similarity more heavily because vibe matters more than just the sound:</p>
+                        <div class="formula">
+                            Final Score = (Mood × 0.6) + (Audio × 0.4)
+                        </div>
+                    </div>
+
+                    <div class="process-step">
+                        <h4>Store for Fast Lookup</h4>
+                        <p>
+                            All scores are pre-calculated and saved in a database table called <code>song_similarities</code>.
+                            When you click a song, we just look up the top 10 most similar songs instantly!
+                        </p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Real Example -->
+            <section>
+                <h2>Real-World Example</h2>
+                <p>Let's say you're listening to <strong>"All Too Well (10 Minute Version)"</strong>. Here's what similar songs might look like:</p>
+
+                <table class="example-table">
+                    <thead>
+                        <tr>
+                            <th>Similar Song</th>
+                            <th>Mood</th>
+                            <th>Audio</th>
+                            <th>Combined</th>
+                            <th>Why?</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>Last Kiss</strong></td>
+                            <td>95%</td>
+                            <td>82%</td>
+                            <td><span class="score-badge score-high">90%</span></td>
+                            <td>Both melancholic breakup songs, similar tempo</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Sad Beautiful Tragic</strong></td>
+                            <td>88%</td>
+                            <td>79%</td>
+                            <td><span class="score-badge score-high">85%</span></td>
+                            <td>Same mood, slower acoustic feel</td>
+                        </tr>
+                        <tr>
+                            <td><strong>champagne problems</strong></td>
+                            <td>85%</td>
+                            <td>75%</td>
+                            <td><span class="score-badge score-high">81%</span></td>
+                            <td>Heartbreak theme, piano-driven</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Shake It Off</strong></td>
+                            <td>15%</td>
+                            <td>45%</td>
+                            <td><span class="score-badge score-low">27%</span></td>
+                            <td>Completely different vibe</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </section>
+
+            <!-- Why Pre-Compute? -->
+            <section>
+                <h2>Why Pre-Calculate?</h2>
+                <p>Imagine you have <strong>250 songs</strong> in Taylor's discography:</p>
+                <ul style="margin-left: 24px; margin-bottom: 20px; color: #c0c0d0;">
+                    <li style="margin-bottom: 12px;">Comparing every song to every other song = <strong>250 × 249 = 62,250 comparisons</strong></li>
+                    <li style="margin-bottom: 12px;">Doing this calculation every time someone clicks would be <strong>slow ⏱️</strong></li>
+                </ul>
+
+                <div class="highlight-box">
+                    <p><strong>✅ Solution:</strong> Pre-compute everything once, store it in a database, and look it up instantly when needed!</p>
+                </div>
+
+                <h3>Performance Benefits</h3>
+                <div class="comparison-grid">
+                    <div class="metric-card">
+                        <h4>On-The-Fly Calculation</h4>
+                        <div class="value">~500ms</div>
+                        <div class="description">Slow, CPU-intensive</div>
+                    </div>
+                    <div class="metric-card">
+                        <h4>Pre-Computed Lookup</h4>
+                        <div class="value">&lt;10ms</div>
+                        <div class="description">Fast, database indexed</div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- What's in the Database? -->
+            <section>
+                <h2>What's Stored in the Database?</h2>
+                <p>Each row in the <code>song_similarities</code> table contains:</p>
+
+                <table class="example-table">
+                    <thead>
+                        <tr>
+                            <th>Column</th>
+                            <th>Description</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><code>song_id</code></td>
+                            <td>The song we're comparing FROM (e.g., "Anti-Hero")</td>
+                        </tr>
+                        <tr>
+                            <td><code>similar_song_id</code></td>
+                            <td>The song we're comparing TO (e.g., "Karma")</td>
+                        </tr>
+                        <tr>
+                            <td><code>mood_similarity</code></td>
+                            <td>How similar the VIBES are (0–1 score)</td>
+                        </tr>
+                        <tr>
+                            <td><code>audio_similarity</code></td>
+                            <td>How similar the SOUND is (0–1 score)</td>
+                        </tr>
+                        <tr>
+                            <td><code>combined_similarity</code></td>
+                            <td>Overall similarity: <strong>60% mood + 40% audio</strong></td>
+                        </tr>
+                        <tr>
+                            <td><code>computed_at</code></td>
+                            <td>When this was calculated</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </section>
+
+            <!-- How the App Uses It -->
+            <section>
+                <h2>How the Analysis Tab Uses It</h2>
+                <div class="process-steps">
+                    <div class="process-step">
+                        <h4>User Clicks a Song</h4>
+                        <p>You tap on "All Too Well" in the Analysis tab</p>
+                    </div>
+                    <div class="process-step">
+                        <h4>API Queries Database</h4>
+                        <p>Looks up: <code>SELECT * FROM song_similarities WHERE song_id = [song] ORDER BY combined_similarity DESC LIMIT 10</code></p>
+                    </div>
+                    <div class="process-step">
+                        <h4>Returns Top Matches</h4>
+                        <p>Gets the 10 most similar songs instantly</p>
+                    </div>
+                    <div class="process-step">
+                        <h4>Displays in UI</h4>
+                        <p>Shows them with similarity percentages and details</p>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <footer>
+            <a href="index.html" class="back-link">← Back to Documentation Index</a>
+        </footer>
+    </div>
+</body>
+</html>
