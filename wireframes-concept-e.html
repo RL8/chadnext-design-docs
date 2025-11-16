@@ -1,0 +1,914 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Power User View - Combined Analysis Concept</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 420px;
+            margin: 0 auto;
+            background: #f5f5f5;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        }
+
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 16px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .back-btn {
+            width: 36px;
+            height: 36px;
+            border-radius: 8px;
+            background: rgba(255,255,255,0.2);
+            border: none;
+            color: white;
+            font-size: 20px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .back-btn:hover {
+            background: rgba(255,255,255,0.3);
+        }
+
+        .header-content {
+            flex: 1;
+        }
+
+        .header-content h1 {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 2px;
+        }
+
+        .header-content p {
+            font-size: 13px;
+            opacity: 0.9;
+        }
+
+        .settings-btn {
+            width: 36px;
+            height: 36px;
+            border-radius: 8px;
+            background: rgba(255,255,255,0.2);
+            border: none;
+            color: white;
+            font-size: 18px;
+            cursor: pointer;
+        }
+
+        .settings-btn:hover {
+            background: rgba(255,255,255,0.3);
+        }
+
+        /* Theme Toggle */
+        .theme-controls {
+            background: rgba(0,0,0,0.05);
+            padding: 12px 16px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid rgba(0,0,0,0.1);
+        }
+
+        .theme-label {
+            font-size: 13px;
+            font-weight: 600;
+            color: #333;
+        }
+
+        .theme-toggle {
+            display: flex;
+            gap: 8px;
+        }
+
+        .theme-btn {
+            padding: 6px 12px;
+            border-radius: 6px;
+            border: 1px solid #ddd;
+            background: white;
+            font-size: 12px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .theme-btn.active {
+            background: #667eea;
+            color: white;
+            border-color: #667eea;
+        }
+
+        /* Filter Bar */
+        .filter-bar {
+            background: white;
+            padding: 12px 16px;
+            border-bottom: 2px solid #e0e0e0;
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+
+        .filter-label {
+            font-size: 11px;
+            font-weight: 600;
+            text-transform: uppercase;
+            color: #666;
+            margin-bottom: 8px;
+            letter-spacing: 0.5px;
+        }
+
+        .filter-chips {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .filter-chip {
+            padding: 8px 14px;
+            border-radius: 20px;
+            border: 2px solid #e0e0e0;
+            background: white;
+            font-size: 13px;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            user-select: none;
+        }
+
+        .filter-chip:hover {
+            border-color: #667eea;
+            transform: translateY(-1px);
+        }
+
+        .filter-chip.active {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border-color: #667eea;
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+        }
+
+        /* View Mode Toggle */
+        .view-mode-bar {
+            background: white;
+            padding: 12px 16px;
+            border-bottom: 2px solid #e0e0e0;
+            display: flex;
+            gap: 8px;
+        }
+
+        .view-mode-btn {
+            flex: 1;
+            padding: 10px;
+            border-radius: 8px;
+            border: 2px solid #e0e0e0;
+            background: white;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .view-mode-btn.active {
+            background: #667eea;
+            color: white;
+            border-color: #667eea;
+        }
+
+        /* Tab Navigation */
+        .tab-nav {
+            background: white;
+            padding: 12px 16px;
+            border-bottom: 2px solid #e0e0e0;
+            position: sticky;
+            top: 100px;
+            z-index: 9;
+        }
+
+        .tab-nav-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 12px;
+        }
+
+        .tab-arrows {
+            display: flex;
+            gap: 4px;
+        }
+
+        .tab-arrow {
+            width: 32px;
+            height: 32px;
+            border-radius: 6px;
+            border: 1px solid #ddd;
+            background: white;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+        }
+
+        .tab-arrow:disabled {
+            opacity: 0.3;
+            cursor: not-allowed;
+        }
+
+        .tab-arrow:not(:disabled):hover {
+            background: #f5f5f5;
+        }
+
+        .tab-dots {
+            display: flex;
+            gap: 6px;
+            justify-content: center;
+        }
+
+        .tab-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #ddd;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .tab-dot.active {
+            width: 24px;
+            border-radius: 4px;
+            background: #667eea;
+        }
+
+        .tab-title {
+            text-align: center;
+            font-size: 12px;
+            color: #666;
+            margin-top: 8px;
+        }
+
+        .tab-title strong {
+            color: #667eea;
+        }
+
+        /* Content Area */
+        .content {
+            background: #f5f5f5;
+            min-height: 500px;
+            padding: 16px;
+        }
+
+        .content.split {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            padding: 12px;
+        }
+
+        .content.dense {
+            background: #0f0f1e;
+            color: #e0e0e0;
+        }
+
+        /* Cards */
+        .card {
+            background: white;
+            border-radius: 12px;
+            padding: 16px;
+            margin-bottom: 12px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+
+        .content.dense .card {
+            background: #1a1a2e;
+            border: 1px solid #2a2a3e;
+            padding: 12px;
+            margin-bottom: 8px;
+        }
+
+        .content.split .card {
+            padding: 12px;
+            margin-bottom: 8px;
+        }
+
+        .card-header {
+            font-size: 14px;
+            font-weight: 600;
+            color: #667eea;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .content.dense .card-header {
+            font-size: 12px;
+            color: #a78bfa;
+            margin-bottom: 8px;
+        }
+
+        .content.split .card-header {
+            font-size: 11px;
+            margin-bottom: 8px;
+        }
+
+        .comparison-label {
+            font-size: 10px;
+            text-transform: uppercase;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+            margin-bottom: 8px;
+            padding: 4px 8px;
+            border-radius: 4px;
+            display: inline-block;
+        }
+
+        .label-current {
+            background: rgba(102, 126, 234, 0.2);
+            color: #667eea;
+        }
+
+        .label-compare {
+            background: rgba(236, 72, 153, 0.2);
+            color: #ec4899;
+        }
+
+        .metric-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 0;
+            border-bottom: 1px solid #f0f0f0;
+        }
+
+        .content.dense .metric-row {
+            padding: 6px 0;
+            font-size: 12px;
+        }
+
+        .content.split .metric-row {
+            padding: 6px 0;
+            font-size: 11px;
+        }
+
+        .metric-row:last-child {
+            border-bottom: none;
+        }
+
+        .metric-label {
+            font-size: 13px;
+            color: #666;
+        }
+
+        .content.dense .metric-label {
+            font-size: 11px;
+            color: #9ca3af;
+        }
+
+        .metric-value {
+            font-weight: 600;
+            color: #333;
+            text-transform: capitalize;
+        }
+
+        .content.dense .metric-value {
+            color: #e0e0e0;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background: #f0f0f0;
+            border-radius: 4px;
+            overflow: hidden;
+            margin-top: 8px;
+        }
+
+        .content.dense .progress-bar {
+            height: 6px;
+            background: #2a2a3e;
+            margin-top: 6px;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+            transition: width 0.3s;
+        }
+
+        .similar-song {
+            padding: 12px;
+            background: #f9f9f9;
+            border-radius: 8px;
+            margin-bottom: 8px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .content.dense .similar-song {
+            background: #2a2a3e;
+            padding: 8px;
+            margin-bottom: 6px;
+        }
+
+        .similar-info {
+            flex: 1;
+        }
+
+        .similar-title {
+            font-size: 13px;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 2px;
+        }
+
+        .content.dense .similar-title {
+            font-size: 12px;
+            color: #e0e0e0;
+        }
+
+        .similar-album {
+            font-size: 11px;
+            color: #999;
+        }
+
+        .content.dense .similar-album {
+            color: #6b7280;
+        }
+
+        .similarity-badge {
+            padding: 4px 10px;
+            background: #667eea;
+            color: white;
+            border-radius: 12px;
+            font-size: 11px;
+            font-weight: 600;
+        }
+
+        .theme-badge {
+            display: inline-block;
+            padding: 6px 12px;
+            background: rgba(102, 126, 234, 0.1);
+            color: #667eea;
+            border-radius: 16px;
+            font-size: 12px;
+            font-weight: 600;
+            margin-right: 8px;
+            margin-bottom: 8px;
+        }
+
+        .content.dense .theme-badge {
+            background: rgba(167, 139, 250, 0.2);
+            color: #a78bfa;
+            font-size: 11px;
+            padding: 4px 10px;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .info-notice {
+            background: #fff3cd;
+            border: 1px solid #ffc107;
+            color: #856404;
+            padding: 12px;
+            border-radius: 8px;
+            font-size: 12px;
+            margin-bottom: 12px;
+            line-height: 1.5;
+        }
+
+        .content.dense .info-notice {
+            background: rgba(251, 191, 36, 0.1);
+            border-color: rgba(251, 191, 36, 0.3);
+            color: #fbbf24;
+        }
+
+        .comparison-diff {
+            font-size: 11px;
+            margin-left: 8px;
+            padding: 2px 6px;
+            border-radius: 4px;
+        }
+
+        .diff-positive {
+            color: #10b981;
+            background: rgba(16, 185, 129, 0.1);
+        }
+
+        .diff-negative {
+            color: #ef4444;
+            background: rgba(239, 68, 68, 0.1);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <button class="back-btn">←</button>
+            <div class="header-content">
+                <h1>Anti-Hero</h1>
+                <p>Midnights • Track 3</p>
+            </div>
+            <button class="settings-btn">⚙</button>
+        </div>
+
+        <!-- Theme Controls -->
+        <div class="theme-controls">
+            <span class="theme-label">Theme</span>
+            <div class="theme-toggle">
+                <button class="theme-btn active" onclick="setTheme('light')">☀️ Light</button>
+                <button class="theme-btn" onclick="setTheme('dark')">🌙 Dark</button>
+            </div>
+        </div>
+
+        <!-- Filter Bar -->
+        <div class="filter-bar">
+            <div class="filter-label">Active Data Layers (Click to toggle)</div>
+            <div class="filter-chips">
+                <div class="filter-chip active" data-filter="mood" onclick="toggleFilter('mood')">
+                    <span>😢</span>
+                    <span>Mood</span>
+                </div>
+                <div class="filter-chip active" data-filter="energy" onclick="toggleFilter('energy')">
+                    <span>⚡</span>
+                    <span>Energy</span>
+                </div>
+                <div class="filter-chip" data-filter="audio" onclick="toggleFilter('audio')">
+                    <span>🎵</span>
+                    <span>Audio</span>
+                </div>
+                <div class="filter-chip" data-filter="themes" onclick="toggleFilter('themes')">
+                    <span>📝</span>
+                    <span>Themes</span>
+                </div>
+                <div class="filter-chip" data-filter="similar" onclick="toggleFilter('similar')">
+                    <span>🔗</span>
+                    <span>Similar</span>
+                </div>
+                <div class="filter-chip" data-filter="stats" onclick="toggleFilter('stats')">
+                    <span>📊</span>
+                    <span>Stats</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- View Mode Toggle -->
+        <div class="view-mode-bar">
+            <button class="view-mode-btn active" onclick="setViewMode('single')">Single View</button>
+            <button class="view-mode-btn" onclick="setViewMode('split')">Compare Mode</button>
+        </div>
+
+        <!-- Tab Navigation -->
+        <div class="tab-nav">
+            <div class="tab-nav-header">
+                <div class="tab-arrows">
+                    <button class="tab-arrow" onclick="previousTab()" id="prevBtn">◄</button>
+                    <button class="tab-arrow" onclick="nextTab()" id="nextBtn">►</button>
+                </div>
+            </div>
+            <div class="tab-dots">
+                <div class="tab-dot active" data-tab="0" onclick="goToTab(0)"></div>
+                <div class="tab-dot" data-tab="1" onclick="goToTab(1)"></div>
+                <div class="tab-dot" data-tab="2" onclick="goToTab(2)"></div>
+                <div class="tab-dot" data-tab="3" onclick="goToTab(3)"></div>
+                <div class="tab-dot" data-tab="4" onclick="goToTab(4)"></div>
+                <div class="tab-dot" data-tab="5" onclick="goToTab(5)"></div>
+            </div>
+            <div class="tab-title">
+                <strong id="currentTab">Overview</strong> (<span id="tabNumber">1</span>/6)
+            </div>
+        </div>
+
+        <!-- Content -->
+        <div class="content" id="content">
+            <!-- Tab 0: Overview -->
+            <div class="tab-content" data-tab="0">
+                <div class="card filter-mood">
+                    <div class="card-header">😢 Mood Profile</div>
+                    <div class="metric-row">
+                        <span class="metric-label">Primary Mood</span>
+                        <span class="metric-value">Introspective</span>
+                    </div>
+                </div>
+
+                <div class="card filter-energy">
+                    <div class="card-header">⚡ Energy Level</div>
+                    <div class="metric-row">
+                        <span class="metric-label">Energy</span>
+                        <span class="metric-value">Medium</span>
+                    </div>
+                </div>
+
+                <div class="card filter-audio hidden">
+                    <div class="card-header">🎵 Audio Snapshot</div>
+                    <div class="metric-row">
+                        <span class="metric-label">Danceability</span>
+                        <span class="metric-value">68%</span>
+                    </div>
+                </div>
+
+                <div class="info-notice">
+                    💡 Tip: Enable more data layers above to see additional information, or swipe to explore other categories.
+                </div>
+            </div>
+
+            <!-- Tab 1: Mood Analysis -->
+            <div class="tab-content hidden" data-tab="1">
+                <div class="card filter-mood">
+                    <div class="card-header">😢 Mood Analysis</div>
+                    <div class="metric-row">
+                        <span class="metric-label">Primary Mood</span>
+                        <span class="metric-value">Introspective</span>
+                    </div>
+                    <div class="metric-row">
+                        <span class="metric-label">Emotional Intensity</span>
+                        <span class="metric-value">High</span>
+                    </div>
+                    <div class="metric-row">
+                        <span class="metric-label">Tone</span>
+                        <span class="metric-value">Self-reflective</span>
+                    </div>
+                </div>
+
+                <div class="card filter-mood hidden">
+                    <div class="info-notice">
+                        ℹ️ Mood data layer is disabled. Enable it in the filter bar to see content.
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tab 2: Audio Features -->
+            <div class="tab-content hidden" data-tab="2">
+                <div class="card filter-audio">
+                    <div class="card-header">🎵 Audio Features</div>
+                    <div class="metric-row">
+                        <span class="metric-label">Danceability</span>
+                        <span class="metric-value">68%</span>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress-fill" style="width: 68%"></div>
+                    </div>
+                    <div class="metric-row">
+                        <span class="metric-label">Energy</span>
+                        <span class="metric-value">73%</span>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress-fill" style="width: 73%"></div>
+                    </div>
+                    <div class="metric-row">
+                        <span class="metric-label">Valence</span>
+                        <span class="metric-value">45%</span>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress-fill" style="width: 45%"></div>
+                    </div>
+                </div>
+
+                <div class="card filter-audio hidden">
+                    <div class="info-notice">
+                        ℹ️ Audio data layer is disabled. Enable it in the filter bar to see content.
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tab 3: Themes -->
+            <div class="tab-content hidden" data-tab="3">
+                <div class="card filter-themes">
+                    <div class="card-header">📝 Lyrical Themes</div>
+                    <div>
+                        <span class="theme-badge">Self-doubt</span>
+                        <span class="theme-badge">Insecurity</span>
+                        <span class="theme-badge">Introspection</span>
+                        <span class="theme-badge">Vulnerability</span>
+                    </div>
+                </div>
+
+                <div class="card filter-themes hidden">
+                    <div class="info-notice">
+                        ℹ️ Themes data layer is disabled. Enable it in the filter bar to see content.
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tab 4: Similar Songs -->
+            <div class="tab-content hidden" data-tab="4">
+                <div class="card filter-similar">
+                    <div class="card-header">🔗 Similar Songs</div>
+                    <div class="similar-song">
+                        <div class="similar-info">
+                            <div class="similar-title">Mirrorball</div>
+                            <div class="similar-album">Folklore</div>
+                        </div>
+                        <div class="similarity-badge">87%</div>
+                    </div>
+                    <div class="similar-song">
+                        <div class="similar-info">
+                            <div class="similar-title">This Is Me Trying</div>
+                            <div class="similar-album">Folklore</div>
+                        </div>
+                        <div class="similarity-badge">82%</div>
+                    </div>
+                    <div class="similar-song">
+                        <div class="similar-info">
+                            <div class="similar-title">Archer</div>
+                            <div class="similar-album">Lover</div>
+                        </div>
+                        <div class="similarity-badge">79%</div>
+                    </div>
+                </div>
+
+                <div class="card filter-similar hidden">
+                    <div class="info-notice">
+                        ℹ️ Similar songs data layer is disabled. Enable it in the filter bar to see content.
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tab 5: Comparisons -->
+            <div class="tab-content hidden" data-tab="5">
+                <div class="card filter-stats">
+                    <div class="card-header">📊 Album Context</div>
+                    <div class="metric-row">
+                        <span class="metric-label">Energy vs Album Avg</span>
+                        <span class="metric-value">
+                            73%
+                            <span class="comparison-diff diff-positive">+8%</span>
+                        </span>
+                    </div>
+                    <div class="metric-row">
+                        <span class="metric-label">Valence vs Album Avg</span>
+                        <span class="metric-value">
+                            45%
+                            <span class="comparison-diff diff-negative">-12%</span>
+                        </span>
+                    </div>
+                </div>
+
+                <div class="card filter-stats hidden">
+                    <div class="info-notice">
+                        ℹ️ Stats data layer is disabled. Enable it in the filter bar to see content.
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let currentTabIndex = 0;
+        const tabNames = ['Overview', 'Mood Analysis', 'Audio Features', 'Themes', 'Similar Songs', 'Comparisons'];
+        const activeFilters = new Set(['mood', 'energy']);
+        let viewMode = 'single';
+        let theme = 'light';
+
+        function updateTabDisplay() {
+            // Hide all tabs
+            document.querySelectorAll('.tab-content').forEach(tab => {
+                tab.classList.add('hidden');
+            });
+
+            // Show current tab
+            const currentTab = document.querySelector(`.tab-content[data-tab="${currentTabIndex}"]`);
+            if (currentTab) {
+                currentTab.classList.remove('hidden');
+            }
+
+            // Update dots
+            document.querySelectorAll('.tab-dot').forEach((dot, index) => {
+                dot.classList.toggle('active', index === currentTabIndex);
+            });
+
+            // Update tab title
+            document.getElementById('currentTab').textContent = tabNames[currentTabIndex];
+            document.getElementById('tabNumber').textContent = currentTabIndex + 1;
+
+            // Update arrow buttons
+            document.getElementById('prevBtn').disabled = currentTabIndex === 0;
+            document.getElementById('nextBtn').disabled = currentTabIndex === 5;
+        }
+
+        function updateFilterVisibility() {
+            document.querySelectorAll('.card').forEach(card => {
+                const filterClasses = Array.from(card.classList).filter(c => c.startsWith('filter-'));
+
+                if (filterClasses.length === 0) return;
+
+                const filterType = filterClasses[0].replace('filter-', '');
+                const shouldShow = activeFilters.has(filterType);
+
+                if (shouldShow) {
+                    card.classList.remove('hidden');
+                } else {
+                    card.classList.add('hidden');
+                }
+            });
+
+            // Update content density based on number of active filters
+            const content = document.getElementById('content');
+            if (activeFilters.size >= 4) {
+                content.classList.add('dense');
+            } else {
+                content.classList.remove('dense');
+            }
+        }
+
+        function toggleFilter(filterName) {
+            const chip = document.querySelector(`.filter-chip[data-filter="${filterName}"]`);
+
+            if (activeFilters.has(filterName)) {
+                activeFilters.delete(filterName);
+                chip.classList.remove('active');
+            } else {
+                activeFilters.add(filterName);
+                chip.classList.add('active');
+            }
+
+            updateFilterVisibility();
+        }
+
+        function nextTab() {
+            if (currentTabIndex < 5) {
+                currentTabIndex++;
+                updateTabDisplay();
+            }
+        }
+
+        function previousTab() {
+            if (currentTabIndex > 0) {
+                currentTabIndex--;
+                updateTabDisplay();
+            }
+        }
+
+        function goToTab(index) {
+            currentTabIndex = index;
+            updateTabDisplay();
+        }
+
+        function setViewMode(mode) {
+            viewMode = mode;
+            const buttons = document.querySelectorAll('.view-mode-btn');
+            buttons.forEach(btn => {
+                btn.classList.toggle('active', btn.textContent.toLowerCase().includes(mode));
+            });
+
+            const content = document.getElementById('content');
+            if (mode === 'split') {
+                content.classList.add('split');
+                // In a real implementation, this would duplicate and modify content for comparison
+                alert('Split view would show side-by-side comparison. Click OK to continue in single view for this demo.');
+            } else {
+                content.classList.remove('split');
+            }
+        }
+
+        function setTheme(newTheme) {
+            theme = newTheme;
+            const buttons = document.querySelectorAll('.theme-btn');
+            buttons.forEach(btn => {
+                const isActive = (newTheme === 'light' && btn.textContent.includes('Light')) ||
+                                (newTheme === 'dark' && btn.textContent.includes('Dark'));
+                btn.classList.toggle('active', isActive);
+            });
+
+            const content = document.getElementById('content');
+            if (newTheme === 'dark') {
+                content.classList.add('dense');
+            } else if (activeFilters.size < 4) {
+                content.classList.remove('dense');
+            }
+        }
+
+        // Initialize
+        updateTabDisplay();
+        updateFilterVisibility();
+    </script>
+</body>
+</html>
